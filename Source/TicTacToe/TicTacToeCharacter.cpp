@@ -5,6 +5,10 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "TicTacToeProjectile.h"
+#include "TicTacToePlayerState.h"
+#include "TicTacToeGamestate.h"
+#include "Kismet/GameplayStatics.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -86,10 +90,40 @@ void ATicTacToeCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATicTacToeCharacter::Look);
+
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &ATicTacToeCharacter::Fire);
 	}
 }
 
+void ATicTacToeCharacter::Fire() {
+	// Try and fire a projectile 
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "fire");
+	Server_Fire();
+}
 
+void ATicTacToeCharacter::Server_Fire_Implementation() {
+	ATicTacToeGameState* gamestate = Cast<ATicTacToeGameState>(UGameplayStatics::GetGameState(this));
+	ATicTacToePlayerState* playerstate = Cast<ATicTacToePlayerState>(GetController()->PlayerState);
+	if (ProjectileClass != nullptr)
+	{
+		UWorld* const World = GetWorld();
+		if (World != nullptr)
+		{
+			APlayerController* PlayerController = Cast<APlayerController>(GetController());
+			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
+			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+			const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
+
+			//Set Spawn Collision Handling Override
+			FActorSpawnParameters ActorSpawnParams;
+			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+			  
+			ATicTacToeProjectile* projetil=World->SpawnActor<ATicTacToeProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			projetil->idPlayer = playerstate->GetID();
+			
+		}
+	}
+}
 void ATicTacToeCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
@@ -126,8 +160,4 @@ bool ATicTacToeCharacter::GetHasRifle()
 	return bHasRifle;
 }
 
-int ATicTacToeCharacter::GetID()
-{
-	return ID;
-}
-
+ 
