@@ -119,7 +119,8 @@ void ATicTacToeCharacter::Server_Fire_Implementation() {
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 			  
 			ATicTacToeProjectile* projetil=World->SpawnActor<ATicTacToeProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
-			projetil->idPlayer = playerstate->GetID();
+			if(projetil != nullptr)
+				projetil->idPlayer = playerstate->GetID();
 			
 		}
 	}
