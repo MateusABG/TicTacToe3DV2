@@ -29,21 +29,27 @@ public:
 		TSubclassOf<class ATicTacToeProjectile> ProjectileClass;
 
 	UFUNCTION(Server, Reliable)
-		void Server_InputBlockPosition(const FString& position, int playerIndex);
+		void Server_InputBlockPosition(ATIcTacToePosition* pos,const FString& position, int playerIndex);
 
 	UFUNCTION(Server, Reliable)
 		void Server_ChangeMaterial(ATIcTacToePosition* pos, int playerIndex);
 
+	UFUNCTION(NetMulticast, Reliable)
+		void Multicast_ChangeMaterial(ATIcTacToePosition* pos, int playerIndex);
+
 	UFUNCTION(Server, Reliable)
-		void Server_Shoot(FRotator SpawnRotation,FVector SpawnLocation);
+		void Server_Shoot(UWorld* world, FRotator SpawnRotation,FVector SpawnLocation);
 
 	UFUNCTION(NetMulticast, Unreliable)
-		void Multicast_Shoot(FRotator SpawnRotation, FVector SpawnLocation);
+		void Multicast_Shoot(UWorld* world,FRotator SpawnRotation, FVector SpawnLocation);
 
+	bool won = false;
+	bool tied = false;
 protected:  
 	//Coloca objeto na posição
-		void inputBlockPosition(FString positions, int playerIndex);
+		void inputBlockPosition(ATIcTacToePosition* pos,FString positions, int playerIndex);
 	 
 		//Muda Material do Objeto
 		void ChangeMaterial(ATIcTacToePosition* pos, int playerIndex);
+		 
 };

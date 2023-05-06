@@ -65,14 +65,14 @@ void UTP_WeaponComponent::Fire()
 				gamestate->ProjectileClass = ProjectileClass;
 			}
 
-			if (Character->GetLocalRole() == ROLE_Authority) {
-				gamestate->Server_Shoot(SpawnRotation,SpawnLocation);
-			}
-			else {
-				gamestate->Multicast_Shoot(SpawnRotation, SpawnLocation);
-			}
+			///if (Character->GetLocalRole() == ROLE_Authority) {
+			//	gamestate->Server_Shoot(SpawnRotation,SpawnLocation);
+			//}
+			//else {
+			//	gamestate->Multicast_Shoot(SpawnRotation, SpawnLocation);
+			//}
 			// Spawn the projectile at the muzzle
-			//World->SpawnActor<ATicTacToeProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			World->SpawnActor<ATicTacToeProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 		}
 	}
 	
@@ -109,7 +109,7 @@ void UTP_WeaponComponent::AttachWeapon(ATicTacToeCharacter* TargetCharacter)
 	
 	// switch bHasRifle so the animation blueprint can switch to another animation set
 	Character->SetHasRifle(true);
-
+	Character->MuzzleOffset = MuzzleOffset;
 	// Set up action bindings
 	if (APlayerController* PlayerController = Cast<APlayerController>(Character->GetController()))
 	{
@@ -119,11 +119,11 @@ void UTP_WeaponComponent::AttachWeapon(ATicTacToeCharacter* TargetCharacter)
 			Subsystem->AddMappingContext(FireMappingContext, 1);
 		}
 
-		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent))
-		{
+		//if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent))
+		//{
 			// Fire
-			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::Fire);
-		}
+		///	EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::Fire);
+		//}
 	}
 }
 

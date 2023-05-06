@@ -64,32 +64,33 @@ FString printTable(char matrix[3][3]) {
     return text;
 }
 
-void ATicTacToeGameState::Server_Shoot_Implementation(FRotator SpawnRotator,FVector SpawnLocation) {   
+void ATicTacToeGameState::Server_Shoot_Implementation(UWorld* world, FRotator SpawnRotator,FVector SpawnLocation) {
    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Shoot Server"));
-     UWorld* const World = GetWorld(); 
-     FActorSpawnParameters ActorSpawnParams;
-     ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-     World->SpawnActor<ATicTacToeProjectile>(ProjectileClass, SpawnLocation, SpawnRotator, ActorSpawnParams);
+   Multicast_Shoot(world,SpawnRotator, SpawnLocation);
 }
 
-void ATicTacToeGameState::Multicast_Shoot_Implementation(FRotator SpawnRotator, FVector SpawnLocation) {
+void ATicTacToeGameState::Multicast_Shoot_Implementation(UWorld* world, FRotator SpawnRotator, FVector SpawnLocation) {
    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("Shoot Client"));
-   UWorld* const World = GetWorld();
+   
    FActorSpawnParameters ActorSpawnParams;
    ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-   World->SpawnActor<ATicTacToeProjectile>(ProjectileClass, SpawnLocation, SpawnRotator, ActorSpawnParams);
+   world->SpawnActor<ATicTacToeProjectile>(ProjectileClass, SpawnLocation, SpawnRotator, ActorSpawnParams);
 }
 
-void ATicTacToeGameState::Server_InputBlockPosition_Implementation(const FString& positions, int index) {  
-    inputBlockPosition(positions, index);
+void ATicTacToeGameState::Server_InputBlockPosition_Implementation(ATIcTacToePosition* pos,const FString& positions, int index) {
+    inputBlockPosition(pos,positions, index);
 }
 
 void ATicTacToeGameState::Server_ChangeMaterial_Implementation(ATIcTacToePosition* pos, int playerIndex) {
-    ChangeMaterial(pos, playerIndex);
+    Multicast_ChangeMaterial(pos,playerIndex);
 }
 
+void ATicTacToeGameState::Multicast_ChangeMaterial_Implementation(ATIcTacToePosition* pos, int playerIndex) {
 
-void ATicTacToeGameState::inputBlockPosition(FString positions, int playerIndex)
+        ChangeMaterial(pos, playerIndex);
+}
+
+void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString positions, int playerIndex)
 { 
     TArray<FString> Substrings;
     positions.ParseIntoArray(Substrings, TEXT(","), true);
@@ -97,34 +98,38 @@ void ATicTacToeGameState::inputBlockPosition(FString positions, int playerIndex)
     if (Substrings.Num() == 2) {
         int X = FCString::Atoi(*Substrings[0]);
         int Y = FCString::Atoi(*Substrings[1]); 
-
-        if (playerIndex == 1) {
+         
+        if (playerIndex == 1 && playerIndex==whichPlayer && (won==false && tied == false)) {
             if (matrix[X][Y] == NULL) {
                 matrix[X][Y] = 'X';
-                bool won = checkWin(matrix, 'X');
-                bool tied = checkTie(matrix);
+                won = checkWin(matrix, 'X');
+                tied = checkTie(matrix);
                 if (won) {
                     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "X wins");
                 }
                 else if (tied) {
                     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Tied"));
                 }
+                Server_ChangeMaterial(pos,playerIndex);
+                whichPlayer = 2;
             }
             else {
                 GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Poscao jah pega, jogue de novo"));
             }
         }
-        else {
+        else if(playerIndex==2 && playerIndex == whichPlayer && (won == false && tied == false)){
             if (matrix[X][Y] == NULL) {
                 matrix[X][Y] = 'O';
-                bool won = checkWin(matrix, 'O');
-                bool tied = checkTie(matrix);
+                won = checkWin(matrix, 'O');
+                tied = checkTie(matrix);
                 if (won) {
                     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("O wins"));
                 }
                 else if (tied) {
                     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Tied"));
                 }
+                Server_ChangeMaterial(pos, playerIndex);
+                whichPlayer = 1;
             }
             else {
                 GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Poscao jah pega, jogue de novo"));
@@ -132,17 +137,13 @@ void ATicTacToeGameState::inputBlockPosition(FString positions, int playerIndex)
         }
 
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, printTable(matrix));
-        if (whichPlayer == 1) {
-            whichPlayer = 2;
-        }
-        else {
-            whichPlayer = 1;
-        }
+        
     }
 }
 void ATicTacToeGameState::ChangeMaterial(ATIcTacToePosition* pos,int playerIndex)
-{
-    pos->ChangeMaterial(playerIndex);
+{  
+        pos->ChangeMaterial(playerIndex); 
+    
 }
  
  

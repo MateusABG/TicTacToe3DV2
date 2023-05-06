@@ -43,15 +43,23 @@ void ATicTacToeProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 		 
 		Destroy();
-		FString string;
+
+		FString positions;
 		if (OtherActor->GetClass()->IsChildOf(ATIcTacToePosition::StaticClass())) {
 			ATIcTacToePosition* actor = Cast<ATIcTacToePosition>(OtherActor);
-			string = actor->Position;
-			//if (GetLocalRole() == ROLE_Authority) {
-				gamestate->Server_InputBlockPosition(string, 1);
-				gamestate->Server_ChangeMaterial(actor, 1);
-				//gamestate->whoShot = GetID();
-			//} 
+			positions = actor->Position;
+			TArray<FString> Substrings;
+			positions.ParseIntoArray(Substrings, TEXT(","), true);
+			if (Substrings.Num() == 2) {
+				int X = FCString::Atoi(*Substrings[0]);
+				int Y = FCString::Atoi(*Substrings[1]);
+				if (gamestate->whichPlayer == idPlayer) {
+					gamestate->Server_InputBlockPosition(actor,positions, idPlayer);
+					//gamestate->Server_ChangeMaterial(actor, idPlayer);
+				}
+			}
+			
+			 //gamestate->whoShot = GetID(); 
 		}  
 	}
 }

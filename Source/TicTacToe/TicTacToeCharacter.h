@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "TicTacToeProjectile.h"
 #include "InputActionValue.h"
 #include "TicTacToeCharacter.generated.h"
 
@@ -23,6 +24,10 @@ class ATicTacToeCharacter : public ACharacter
 	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
+	UPROPERTY(EditAnywhere, Category = Projectile)
+		TSubclassOf<class ATicTacToeProjectile> ProjectileClass;
+	 
+
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
@@ -39,10 +44,11 @@ class ATicTacToeCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
 
-	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	 int ID;
+		class UInputAction* FireAction;
+	 
 
+	 
 public:
 	ATicTacToeCharacter();
 
@@ -54,6 +60,9 @@ public:
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+		FVector MuzzleOffset;
+
 
 	/** Bool for AnimBP to switch to another animation set */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon)
@@ -68,9 +77,14 @@ public:
 	bool GetHasRifle();
 
 
-	/** Getter for the bool */
+	UPROPERTY(EditAnywhere,  Category = PlayerID)
+		int idPlayer;
+
 	UFUNCTION(BlueprintCallable, Category = Weapon)
-		int GetID();
+		void Fire();
+
+	UFUNCTION(Server, Reliable)
+		void Server_Fire();
 
 protected:
 	/** Called for movement input */
@@ -78,6 +92,7 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+	 
 
 protected:
 	// APawn interface
