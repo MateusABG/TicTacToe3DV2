@@ -43,7 +43,10 @@ void ATicTacToeProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 		 
 		Destroy();
+<<<<<<< HEAD
 
+=======
+>>>>>>> aae4c63140ae3e20882e4eeecafcb702e4f99e07
 		FString positions;
 		if (OtherActor->GetClass()->IsChildOf(ATIcTacToePosition::StaticClass())) {
 			ATIcTacToePosition* actor = Cast<ATIcTacToePosition>(OtherActor);

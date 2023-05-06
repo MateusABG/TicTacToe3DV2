@@ -98,8 +98,13 @@ void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString pos
     if (Substrings.Num() == 2) {
         int X = FCString::Atoi(*Substrings[0]);
         int Y = FCString::Atoi(*Substrings[1]); 
+<<<<<<< HEAD
          
         if (playerIndex == 1 && playerIndex==whichPlayer && (won==false && tied == false)) {
+=======
+
+        if (playerIndex == 1 && playerIndex==whichPlayer) {
+>>>>>>> aae4c63140ae3e20882e4eeecafcb702e4f99e07
             if (matrix[X][Y] == NULL) {
                 matrix[X][Y] = 'X';
                 won = checkWin(matrix, 'X');
@@ -117,7 +122,11 @@ void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString pos
                 GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Poscao jah pega, jogue de novo"));
             }
         }
+<<<<<<< HEAD
         else if(playerIndex==2 && playerIndex == whichPlayer && (won == false && tied == false)){
+=======
+        else if(playerIndex==2 && playerIndex == whichPlayer){
+>>>>>>> aae4c63140ae3e20882e4eeecafcb702e4f99e07
             if (matrix[X][Y] == NULL) {
                 matrix[X][Y] = 'O';
                 won = checkWin(matrix, 'O');
@@ -128,8 +137,13 @@ void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString pos
                 else if (tied) {
                     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Tied"));
                 }
+<<<<<<< HEAD
                 Server_ChangeMaterial(pos, playerIndex);
                 whichPlayer = 1;
+=======
+                whichPlayer = 1;
+                Server_ChangeMaterial(pos, playerIndex);
+>>>>>>> aae4c63140ae3e20882e4eeecafcb702e4f99e07
             }
             else {
                 GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Poscao jah pega, jogue de novo"));
