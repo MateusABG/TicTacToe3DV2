@@ -43,7 +43,6 @@ ATicTacToeCharacter::ATicTacToeCharacter()
 void ATicTacToeCharacter::BeginPlay()
 {
 
-
 	switch (GetLocalRole())
 	{
 		case ROLE_None:
