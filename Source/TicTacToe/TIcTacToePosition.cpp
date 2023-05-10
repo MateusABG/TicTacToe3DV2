@@ -25,6 +25,9 @@ void ATIcTacToePosition::ChangeMaterial(int32 Piece)
 	else if(Piece==2) { 
 		CubeMeshComponent->SetMaterial(0, TextureO);
 	}
+	else if(Piece == 0) {
+		CubeMeshComponent->SetMaterial(0, TextureNo);
+	}
 
 }
 // Called when the game starts or when spawned

@@ -42,22 +42,6 @@ ATicTacToeCharacter::ATicTacToeCharacter()
 
 void ATicTacToeCharacter::BeginPlay()
 {
-
-	switch (GetLocalRole())
-	{
-		case ROLE_None:
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("None"));
-			break;
-		case ROLE_SimulatedProxy:
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Simulated"));
-			break;
-		case ROLE_AutonomousProxy:
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Autonomous"));
-			break;
-		case ROLE_Authority:
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Authority"));
-			break;
-	}
 	// Call the base class  
 	Super::BeginPlay();
 

@@ -40,8 +40,14 @@ public:
 	UFUNCTION(Server, Reliable)
 		void Server_Shoot(UWorld* world, FRotator SpawnRotation,FVector SpawnLocation);
 
-	UFUNCTION(NetMulticast, Unreliable)
+	UFUNCTION(NetMulticast, Reliable)
 		void Multicast_Shoot(UWorld* world,FRotator SpawnRotation, FVector SpawnLocation);
+
+	
+		void Server_Reset(const TArray<ATIcTacToePosition*>& position);
+
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
+		void Multicast_Reset(const TArray<ATIcTacToePosition*>& position);
 
 	bool won = false;
 	bool tied = false;
@@ -51,5 +57,7 @@ protected:
 	 
 		//Muda Material do Objeto
 		void ChangeMaterial(ATIcTacToePosition* pos, int playerIndex);
+
+
 		 
 };

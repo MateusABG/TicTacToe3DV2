@@ -64,13 +64,11 @@ FString printTable(char matrix[3][3]) {
     return text;
 }
 
-void ATicTacToeGameState::Server_Shoot_Implementation(UWorld* world, FRotator SpawnRotator,FVector SpawnLocation) {
-   GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Shoot Server"));
+void ATicTacToeGameState::Server_Shoot_Implementation(UWorld* world, FRotator SpawnRotator,FVector SpawnLocation) { 
    Multicast_Shoot(world,SpawnRotator, SpawnLocation);
 }
 
-void ATicTacToeGameState::Multicast_Shoot_Implementation(UWorld* world, FRotator SpawnRotator, FVector SpawnLocation) {
-   GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("Shoot Client"));
+void ATicTacToeGameState::Multicast_Shoot_Implementation(UWorld* world, FRotator SpawnRotator, FVector SpawnLocation) { 
    
    FActorSpawnParameters ActorSpawnParams;
    ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
@@ -88,6 +86,35 @@ void ATicTacToeGameState::Server_ChangeMaterial_Implementation(ATIcTacToePositio
 void ATicTacToeGameState::Multicast_ChangeMaterial_Implementation(ATIcTacToePosition* pos, int playerIndex) {
 
         ChangeMaterial(pos, playerIndex);
+}
+
+ 
+
+void ATicTacToeGameState::Server_Reset(const TArray<ATIcTacToePosition*>& position)
+{
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            matrix[i][j] = NULL;
+        }
+    }
+    Multicast_Reset(position);
+}
+
+void ATicTacToeGameState::Multicast_Reset_Implementation(const TArray<ATIcTacToePosition*>& position)
+{
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            matrix[i][j] = NULL;
+        }
+    }
+
+    for (int i = 0; i < position.Num(); i++) {
+        position[i]->ChangeMaterial(0);
+    }
+    whichPlayer = 1;
+
+
 }
 
 void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString positions, int playerIndex)
@@ -133,9 +160,7 @@ void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString pos
             else {
                 GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Poscao jah pega, jogue de novo"));
             }
-        }
-
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, printTable(matrix));
+        } 
         
     }
 }
