@@ -49,8 +49,19 @@ public:
 	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
 		void Multicast_Reset(const TArray<ATIcTacToePosition*>& position);
 
+
+	void Server_QuitGame(FName MapPath);
+
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
+		void Multicast_QuitGame(FName MapPath);
+	 
 	bool won = false;
-	bool tied = false;
+	UPROPERTY(BlueprintReadWrite)
+		bool Xwon = false;
+	UPROPERTY(BlueprintReadWrite)
+		bool Owon = false;
+	UPROPERTY(BlueprintReadWrite)
+		bool tied = false;
 protected:  
 	//Coloca objeto na posição
 		void inputBlockPosition(ATIcTacToePosition* pos,FString positions, int playerIndex);

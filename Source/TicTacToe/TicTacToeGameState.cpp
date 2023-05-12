@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
+ 
 #include "TicTacToeGameState.h"
-#include "TIcTacToePosition.h"
-#include "TIcTacToeProjectile.h"
-
+#include "TIcTacToePosition.h" 
+#include "TIcTacToeProjectile.h" 
+#include "Kismet/GameplayStatics.h"
+#include "Components/TextBlock.h"
 
 bool checkWin(char matrix[3][3], char player)
 {
@@ -88,8 +88,14 @@ void ATicTacToeGameState::Multicast_ChangeMaterial_Implementation(ATIcTacToePosi
         ChangeMaterial(pos, playerIndex);
 }
 
- 
+void ATicTacToeGameState::Server_QuitGame(FName MapPath) {
+    Multicast_QuitGame(MapPath);
+}
 
+void ATicTacToeGameState::Multicast_QuitGame_Implementation(FName MapPath) {
+    UWorld* world = GetWorld(); 
+    UGameplayStatics::OpenLevel(world, MapPath);
+}
 void ATicTacToeGameState::Server_Reset(const TArray<ATIcTacToePosition*>& position)
 {
     for (int i = 0; i < 3; i++) {
@@ -130,10 +136,10 @@ void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString pos
                 matrix[X][Y] = 'X';
                 won = checkWin(matrix, 'X');
                 tied = checkTie(matrix);
-                if (won) {
-                    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "X wins");
+                if (won) {   
+                    Xwon = true;
                 }
-                else if (tied) {
+                else if (tied) { 
                     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Tied"));
                 }
                 Server_ChangeMaterial(pos,playerIndex);
@@ -149,7 +155,7 @@ void ATicTacToeGameState::inputBlockPosition(ATIcTacToePosition* pos,FString pos
                 won = checkWin(matrix, 'O');
                 tied = checkTie(matrix);
                 if (won) {
-                    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("O wins"));
+                    Owon = true;
                 }
                 else if (tied) {
                     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Tied"));

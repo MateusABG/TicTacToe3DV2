@@ -16,5 +16,8 @@ class TICTACTOE_API ATicTacToePlayerController : public APlayerController
 public:
 
 	UFUNCTION(Server, Reliable, BlueprintCallable)
-		void Server_Reset(const TArray<ATIcTacToePosition*>& position);
+		void Server_Reset(const TArray<ATIcTacToePosition*>& position); 
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+		void Server_Quit(FName MapPath);
 };

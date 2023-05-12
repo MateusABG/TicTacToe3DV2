@@ -143,5 +143,4 @@ bool ATicTacToeCharacter::GetHasRifle()
 {
 	return bHasRifle;
 }
-
  
