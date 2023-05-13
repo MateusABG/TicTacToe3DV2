@@ -16,3 +16,10 @@ void ATicTacToePlayerController::Server_Quit_Implementation(FName MapPath) {
 	UWorld* world = GetWorld();
 	gamestate->Server_QuitGame(MapPath);
 }
+ 
+
+void ATicTacToePlayerController::Server_EndGame_Implementation()
+{
+	ATicTacToeGameState* gamestate = Cast<ATicTacToeGameState>(UGameplayStatics::GetGameState(this));
+	gamestate->Server_Pause_Game();
+}

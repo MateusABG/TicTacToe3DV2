@@ -79,8 +79,7 @@ void ATicTacToeCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 }
 
 void ATicTacToeCharacter::Fire() {
-	// Try and fire a projectile 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "fire");
+	// Try and fire a projectile  
 	Server_Fire();
 }
 

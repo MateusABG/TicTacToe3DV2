@@ -106,6 +106,13 @@ void ATicTacToeGameState::Server_Reset(const TArray<ATIcTacToePosition*>& positi
     Multicast_Reset(position);
 }
 
+void ATicTacToeGameState::Server_Pause_Game() {
+
+}
+void ATicTacToeGameState::Multicast_Pause_Game_Implementation() {
+
+}
+
 void ATicTacToeGameState::Multicast_Reset_Implementation(const TArray<ATIcTacToePosition*>& position)
 {
 

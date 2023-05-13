@@ -20,4 +20,7 @@ public:
 
 	UFUNCTION(Server, Reliable, BlueprintCallable)
 		void Server_Quit(FName MapPath);
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+		void Server_EndGame();
 };

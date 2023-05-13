@@ -55,6 +55,10 @@ public:
 	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
 		void Multicast_QuitGame(FName MapPath);
 	 
+	void Server_Pause_Game();
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
+		void Multicast_Pause_Game();
+
 	bool won = false;
 	UPROPERTY(BlueprintReadWrite)
 		bool Xwon = false;
