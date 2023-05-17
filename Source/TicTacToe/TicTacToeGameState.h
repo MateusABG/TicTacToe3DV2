@@ -32,8 +32,7 @@ public:
 		void Server_InputBlockPosition(ATIcTacToePosition* pos,const FString& position, int playerIndex);
 
 	UFUNCTION(Server, Reliable)
-		void Server_ChangeMaterial(ATIcTacToePosition* pos, int playerIndex);
-
+		void Server_ChangeMaterial(ATIcTacToePosition* pos, int playerIndex); 
 	UFUNCTION(NetMulticast, Reliable)
 		void Multicast_ChangeMaterial(ATIcTacToePosition* pos, int playerIndex);
 
@@ -59,13 +58,19 @@ public:
 	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
 		void Multicast_Pause_Game();
 
-	bool won = false;
-	UPROPERTY(BlueprintReadWrite)
-		bool Xwon = false;
-	UPROPERTY(BlueprintReadWrite)
-		bool Owon = false;
-	UPROPERTY(BlueprintReadWrite)
-		bool tied = false;
+	 
+
+	UPROPERTY(BlueprintReadWrite, Replicated)
+		bool Xwon = false; //X Ganhou
+
+	UPROPERTY(BlueprintReadWrite, Replicated)
+		bool Owon = false;//O Ganhou
+
+	UPROPERTY(BlueprintReadWrite, Replicated)
+		bool tied = false;//Empate
+
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const;
+
 protected:  
 	//Coloca objeto na posição
 		void inputBlockPosition(ATIcTacToePosition* pos,FString positions, int playerIndex);
@@ -74,5 +79,6 @@ protected:
 		void ChangeMaterial(ATIcTacToePosition* pos, int playerIndex);
 
 
-		 
+		UFUNCTION(BlueprintImplementableEvent)
+			void GameOver();
 };
