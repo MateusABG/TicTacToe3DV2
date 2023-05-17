@@ -50,6 +50,8 @@ void ATicTacToeProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 			TArray<FString> Substrings;
 			positions.ParseIntoArray(Substrings, TEXT(","), true);
 			if (Substrings.Num() == 2) {
+
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, positions);
 				int X = FCString::Atoi(*Substrings[0]);
 				int Y = FCString::Atoi(*Substrings[1]);
 				if (gamestate->whichPlayer == idPlayer) {
