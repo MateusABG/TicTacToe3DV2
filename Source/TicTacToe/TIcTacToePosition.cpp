@@ -11,7 +11,7 @@ ATIcTacToePosition::ATIcTacToePosition()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	CubeMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cube Mesh Component"));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeMeshAsset(TEXT("/Engine/BasicShapes/Cube.Cube"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeMeshAsset(TEXT("/Game/TrainingRoom/Meshes/training_board_cube.training_board_cube"));
 	CubeMeshComponent->SetStaticMesh(CubeMeshAsset.Object);
 	CubeMeshComponent->SetMaterial(0, TextureNo);
 	RootComponent = CubeMeshComponent;

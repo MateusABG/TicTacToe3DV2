@@ -105,7 +105,7 @@ void ATicTacToeGameState::Multicast_Reset_Implementation(const TArray<ATIcTacToe
     whichPlayer = 1;
     Xwon = false;
     Owon = false;
-    won = false;
+    //won = false;
     tied = false;
 }
 
