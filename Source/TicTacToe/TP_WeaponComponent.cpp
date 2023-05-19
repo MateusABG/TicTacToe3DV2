@@ -23,23 +23,7 @@ void UTP_WeaponComponent::Fire()
 {
 
 
-	ATicTacToeGameState* gamestate = Cast<ATicTacToeGameState>(UGameplayStatics::GetGameState(this));
-	switch (Character->GetLocalRole())
-	{
-		case ROLE_None: 
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("None"));
-			break;
-		case ROLE_SimulatedProxy:
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Simulated"));
-			break;
-		case ROLE_AutonomousProxy:
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Autonomous"));
-			break;
-		case ROLE_Authority:
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Authority"));
-			break;
-	}
-
+	ATicTacToeGameState* gamestate = Cast<ATicTacToeGameState>(UGameplayStatics::GetGameState(this)); 
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 		return;
