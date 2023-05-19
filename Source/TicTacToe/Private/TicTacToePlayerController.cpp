@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
  
-#include "Kismet/GameplayStatics.h"
 #include "TicTacToePlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include <TicTacToe/TicTacToeGameState.h>
 
 void ATicTacToePlayerController::Server_Reset_Implementation(const TArray<ATIcTacToePosition*>& position)

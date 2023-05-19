@@ -4,7 +4,7 @@
 #include "TIcTacToePosition.h" 
 #include "TIcTacToeProjectile.h" 
 #include "Kismet/GameplayStatics.h"
-#include "Components/TextBlock.h"
+//#include "Components/TextBlock.h"
 #include "Net/UnrealNetwork.h"
 
 bool checkWin(char matrix[3][3], char player)
