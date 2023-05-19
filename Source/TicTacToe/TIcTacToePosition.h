@@ -16,7 +16,8 @@ class TICTACTOE_API ATIcTacToePosition : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ATIcTacToePosition();
-	UStaticMeshComponent* CubeMeshComponent;
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* CubeMeshComponent;
 	UMaterialInstanceDynamic* CubeMaterial;
 
 	UPROPERTY(EditAnywhere)
